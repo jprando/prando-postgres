@@ -16,10 +16,9 @@ run:
 		-e POSTGRES_USER=$(USERNAME) \
 		-e POSTGRES_PASSWORD=$(PASSWORD) \
 		-e POSTGRES_DB=$(DATABASE) \
-		-e PGDATA=/srv/postgres/database \
-		-v "$(SLUG)-postgres-bin:/usr/local/bin" \
-		-v "$(PWD):/srv/postgres:z" \
-		-w /srv/postgres \
+		-e PGDATA=/srv/postgres/pg15/database \
+		-v "$(PWD):/srv/postgres/pg15:z" \
+		-w /srv/postgres/pg15 \
 		-p 5432:5432 \
 		--health-cmd "psql -h127.0.0.1 -p5432 -U$(USERNAME) -l" \
 		--health-interval "20s" \
@@ -41,4 +40,6 @@ __rm:
 log:
 	@podman logs -f $(CONTAINER_NAME)
 cli:
-	@podman exec -it $(CONTAINER_NAME) psql $(DATABASE) $(USERNAME)
+	podman exec -it $(CONTAINER_NAME) /usr/local/bin/psql -h/var/run/postgresql $(DATABASE) $(USERNAME)
+bash:
+	@podman exec -it $(CONTAINER_NAME) bash
