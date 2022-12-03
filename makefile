@@ -36,7 +36,7 @@ __rm:
 	@podman rm $(CONTAINER_NAME)
 
 cli:
-	podman exec -it $(CONTAINER_NAME) /usr/local/bin/psql -h/var/run/postgresql $(DATABASE) $(USERNAME)
+	@make psql
 psql:
 	podman exec -it $(CONTAINER_NAME) /usr/local/bin/psql -h/var/run/postgresql $(DATABASE) $(USERNAME)
 bash:
