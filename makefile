@@ -1,4 +1,5 @@
 SLUG=prando
+
 POSTGRES_DOCKER_IMAGE=docker.io/library/postgres:15-alpine
 CONTAINER_NAME=$(SLUG)-postgres
 USERNAME=64a712d6dec7949739e9f46a14f83075
