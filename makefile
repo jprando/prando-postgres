@@ -5,6 +5,7 @@ CONTAINER_NAME=$(SLUG)-postgres
 USERNAME=64a712d6dec7949739e9f46a14f83075
 PASSWORD=53e8c1c4e9b7af6ab75e1498912f9ab3
 DATABASE=$(SLUG)db
+PORT=5432
 
 run:
 	-@make pull
@@ -14,11 +15,11 @@ run:
 		-e POSTGRES_USER=$(USERNAME) \
 		-e POSTGRES_PASSWORD=$(PASSWORD) \
 		-e POSTGRES_DB=$(DATABASE) \
-		-e PGDATA=/srv/postgres/pg15/database \
-		-v "$(PWD):/srv/postgres/pg15:z" \
-		-w /srv/postgres/pg15 \
-		-p 5432:5432 \
-		--health-cmd "psql -h127.0.0.1 -p5432 -U$(USERNAME) -l" \
+		-e PGDATA=/srv/postgres/$(SLUG)/pg15/database \
+		-v "$(PWD):/srv/postgres/$(SLUG):z" \
+		-w /srv/postgres/$(SLUG)/pg15 \
+		-p $(PORT):5432 \
+		--health-cmd "psql -h/var/run/postgresql -p5432 -U$(USERNAME) -l" \
 		--health-interval "20s" \
 		--health-retries 3 \
 		--health-timeout "10s" \
