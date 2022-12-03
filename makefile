@@ -6,9 +6,6 @@ USERNAME=64a712d6dec7949739e9f46a14f83075
 PASSWORD=53e8c1c4e9b7af6ab75e1498912f9ab3
 DATABASE=$(SLUG)db
 
-pull:
-	@podman pull $(POSTGRES_DOCKER_IMAGE)
-
 run:
 	-@make pull
 	-@make __rm
@@ -38,9 +35,14 @@ __rm:
 	-@make stop
 	@podman rm $(CONTAINER_NAME)
 
-log:
-	@podman logs -f $(CONTAINER_NAME)
 cli:
+	podman exec -it $(CONTAINER_NAME) /usr/local/bin/psql -h/var/run/postgresql $(DATABASE) $(USERNAME)
+psql:
 	podman exec -it $(CONTAINER_NAME) /usr/local/bin/psql -h/var/run/postgresql $(DATABASE) $(USERNAME)
 bash:
 	@podman exec -it $(CONTAINER_NAME) bash
+
+pull:
+	@podman pull $(POSTGRES_DOCKER_IMAGE)
+log:
+	@podman logs -f $(CONTAINER_NAME)
